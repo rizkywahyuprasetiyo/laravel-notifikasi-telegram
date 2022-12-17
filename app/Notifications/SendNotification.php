@@ -46,10 +46,10 @@ class SendNotification extends Notification
             // Optional recipient user id.
             ->to(-1001812551864)
             // Markdown supported.
-            ->content("Progress Report")
-            ->line($notifiable->tanggal->isoFormat("dddd, D MMM YYYY"))
-            ->line($notifiable->uraian)
-            ->line($notifiable->status)
+            ->content("\[Progress Report]\n")
+            ->line($notifiable->uraian . "\n")
+            ->line("📆 " . $notifiable->tanggal->isoFormat("dddd, D MMM YYYY"))
+            ->line("🗒 " . $notifiable->status)
 
             // (Optional) Blade template for the content.
             // ->view('notification', ['url' => $url])
