@@ -9,6 +9,8 @@ class Progress extends Model
 {
     use HasFactory;
 
+    protected $dates = ['tanggal'];
+
     protected $table = 'progress';
 
     protected $fillable = [

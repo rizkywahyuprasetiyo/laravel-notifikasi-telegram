@@ -44,18 +44,18 @@ class SendNotification extends Notification
     {
         return TelegramMessage::create()
             // Optional recipient user id.
-            ->to($notifiable->telegram_user_id)
+            ->to(-1001812551864)
             // Markdown supported.
-            ->content("Hello there!")
-            ->line("Your invoice has been *PAID*")
-            ->line("Thank you!")
+            ->content("Progress Report")
+            ->line($notifiable->tanggal->isoFormat("dddd, D MMM YYYY"))
+            ->line($notifiable->uraian)
+            ->line($notifiable->status)
 
             // (Optional) Blade template for the content.
             // ->view('notification', ['url' => $url])
 
             // (Optional) Inline Buttons
-            ->button('View Invoice', $url)
-            ->button('Download Invoice', $url);
+            ->button('Lihat File', $notifiable->link);
     }
 
     /**
