@@ -2,7 +2,10 @@
 
 namespace App\Console;
 
+use App\Models\SertifikatIUP;
+use App\Notifications\DeadlineNotification;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
@@ -15,7 +18,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            $dataSertifikatIUP = SertifikatIUP::where('tanggal_berakhir', '>', now())->get();
+            foreach ($dataSertifikatIUP as $sertifikat) {
+                if ($sertifikat->tanggal_berakhir->diffInDays(now()) < 7) {
+                    Notification::send($sertifikat, new DeadlineNotification());
+                }
+            }
+        })->everyMinute();
     }
 
     /**
@@ -25,7 +35,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
